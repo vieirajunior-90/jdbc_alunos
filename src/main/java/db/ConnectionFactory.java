@@ -3,6 +3,7 @@ package db;
 import lombok.NoArgsConstructor;
 
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -30,7 +31,6 @@ public class ConnectionFactory {
         }
         return conn;
     }
-
     private static void loadProperties(){
         try(FileInputStream fs = new FileInputStream("src/main/resources/db.properties")) {
             Properties props = new Properties();
