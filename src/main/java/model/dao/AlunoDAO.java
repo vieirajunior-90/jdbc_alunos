@@ -15,7 +15,21 @@ public class AlunoDAO implements IAlunoDAO {
     private ResultSet rs;
     @Override
     public void insert(Aluno aluno) {
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            sql = "INSERT INTO alunos (nome, telefone) VALUES (?, ?)";
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, aluno.getNome());
+            pst.setString(2, aluno.getTelefone());
 
+            int rowsAffeted = pst.executeUpdate();
+
+            if (rowsAffeted > 0) {
+                System.out.println("Registro inserido com sucesso!");
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
     }
 
     @Override
