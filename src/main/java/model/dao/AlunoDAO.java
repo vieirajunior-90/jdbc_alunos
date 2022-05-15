@@ -4,6 +4,7 @@ import db.ConnectionFactory;
 import model.entities.Aluno;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AlunoDAO implements IAlunoDAO {
@@ -52,7 +53,27 @@ public class AlunoDAO implements IAlunoDAO {
 
     @Override
     public List<Aluno> findAll() {
-        return null;
+        List<Aluno> alunos = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            sql = "SELECT * FROM alunos";
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                Aluno aluno = new Aluno();
+                aluno.setId(rs.getInt("id"));
+                aluno.setNome(rs.getString("nome"));
+                aluno.setTelefone(rs.getString("telefone"));
+
+                alunos.add(aluno);
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+
+        return alunos;
     }
 
     @Override
