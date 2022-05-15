@@ -54,6 +54,23 @@ public class AlunoDAO implements IAlunoDAO {
 
     @Override
     public void deleteById(Integer id) {
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            sql = "DELETE FROM alunos WHERE id = ?";
+            pst = conn.prepareStatement(sql);
+            pst.setInt(1, id);
+
+            int rowsAffeted = pst.executeUpdate();
+
+            if (rowsAffeted > 0) {
+                System.out.println("Registro excluído com sucesso!");
+            }
+            else {
+                System.out.println("Nenhum registro encontrado com esse ID!");
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
 
     }
 
