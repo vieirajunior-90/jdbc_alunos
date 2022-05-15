@@ -78,6 +78,32 @@ public class AlunoDAO implements IAlunoDAO {
 
     @Override
     public List<Aluno> findByName(String nome) {
-        return null;
+        List<Aluno> alunos = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            sql = "SELECT * FROM alunos WHERE nome LIKE ?";
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, "%" + nome + "%");
+
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Aluno aluno = new Aluno();
+                aluno.setId(rs.getInt("id"));
+                aluno.setNome(rs.getString("nome"));
+                aluno.setTelefone(rs.getString("telefone"));
+
+                alunos.add(aluno);
+            }
+
+            if (alunos.isEmpty()) {
+                System.out.println("Nenhum aluno encontrado!");
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+
+        return alunos;
     }
 }
