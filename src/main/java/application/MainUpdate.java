@@ -2,12 +2,17 @@ package application;
 
 import model.dao.AlunoDAO;
 import model.dao.IAlunoDAO;
+import model.entities.Aluno;
 
-public class MainSelect {
+public class MainUpdate {
 
     public static void main(String[] args) {
 
         IAlunoDAO dao = new AlunoDAO();
-        dao.findById(3).toString();
+
+        Aluno aluno = dao.findById(2);
+        aluno.setNome("Jessica Vieira");
+
+        dao.update(aluno);
     }
 }

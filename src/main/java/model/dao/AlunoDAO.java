@@ -34,7 +34,22 @@ public class AlunoDAO implements IAlunoDAO {
 
     @Override
     public void update(Aluno aluno) {
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            sql = "UPDATE alunos SET nome = ?, telefone = ? WHERE id = ?";
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, aluno.getNome());
+            pst.setString(2, aluno.getTelefone());
+            pst.setInt(3, aluno.getId());
 
+            int rowsAffeted = pst.executeUpdate();
+
+            if (rowsAffeted > 0) {
+                System.out.println("Registro atualizado com sucesso!");
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
     }
 
     @Override
@@ -43,7 +58,7 @@ public class AlunoDAO implements IAlunoDAO {
     }
 
     @Override
-    public void findById(Integer id) {
+    public Aluno findById(Integer id) {
         try (Connection conn = ConnectionFactory.getConnection()) {
             sql = "SELECT * FROM alunos WHERE id = ?";
             pst = conn.prepareStatement(sql);
@@ -57,12 +72,13 @@ public class AlunoDAO implements IAlunoDAO {
                 aluno.setNome(rs.getString("nome"));
                 aluno.setTelefone(rs.getString("telefone"));
 
-                System.out.println(aluno);
+                return aluno;
             }
         }
         catch (SQLException e) {
             System.out.println("Erro: " + e.getMessage());
         }
+        return null;
     }
 
     @Override

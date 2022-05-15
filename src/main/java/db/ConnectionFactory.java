@@ -15,8 +15,8 @@ public class ConnectionFactory {
     public ConnectionFactory() {
     }
 
-    public static Connection getConnection() {
-        if(conn == null) {
+    public static Connection getConnection() throws SQLException {
+        if(conn == null || conn.isClosed()) {
             try {
                 conn = DriverManager.getConnection(URL, USER, PASS);
             }
