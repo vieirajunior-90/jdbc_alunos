@@ -1,21 +1,26 @@
 package model.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Aluno implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private final static long serialVersionUID = 1L;
 
     private Integer id;
     private String nome;
     private String telefone;
+
+    public Aluno() {
+    }
+
+    public Aluno(String nome, String telefone) {
+        this.nome = nome;
+        this.telefone = telefone;
+    }
 
     @Override
     public String toString() {
